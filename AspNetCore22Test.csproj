@@ -14,4 +14,10 @@
         <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     </ItemGroup>
 
+
+    <ItemGroup>
+      <Content Include=".platform\routes.yaml" />
+      <Content Include=".platform\services.yaml" />
+    </ItemGroup>
+
 </Project>
