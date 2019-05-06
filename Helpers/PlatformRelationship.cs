@@ -70,7 +70,7 @@ namespace AspNetCore22Test.Helpers
         {
             var r = relationshipName != null
                 ? Relationships[relationshipName].Single()
-                : Relationships.Values.Single().Single(x => x.Rel == "mysql");
+                : Relationships.Values.Single(x => x[0].Rel == "mysql").Single();
             
             return $"server={r.Host};uid={r.Username};pwd={r.Password};database={r.Path}";
         }
@@ -84,7 +84,7 @@ namespace AspNetCore22Test.Helpers
         {
             var r = relationshipName != null
                 ? Relationships[relationshipName].Single()
-                : Relationships.Values.Single().Single(x => x.Rel == "redis");
+                : Relationships.Values.Single(x => x[0].Rel == "redis").Single();
             
             return $"{r.Host}:{r.Port}";
         }
