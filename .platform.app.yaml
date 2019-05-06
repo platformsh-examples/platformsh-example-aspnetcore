@@ -10,7 +10,7 @@ web:
       passthru: true
       root: "wwwroot"
   commands:
-    start: 'dotnet ./AspNetCore22Test.dll'
+    start: './AspNetCore22Test'
 
 hooks:
   build: |
