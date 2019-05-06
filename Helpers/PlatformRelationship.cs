@@ -33,8 +33,8 @@ namespace AspNetCore22Test.Helpers
         
         private PlatformRelationship() {}
 
-        private static Dictionary<string, PlatformRelationship> _relationships;
-        public static Dictionary<string, PlatformRelationship> Relationships
+        private static Dictionary<string, PlatformRelationship[]> _relationships;
+        public static Dictionary<string, PlatformRelationship[]> Relationships
         {
             get
             {
@@ -42,7 +42,7 @@ namespace AspNetCore22Test.Helpers
                 {
                     var relationshipsStr = Environment.GetEnvironmentVariable("PLATFORM_RELATIONSHIPS");
                     if (relationshipsStr == null)
-                        _relationships = new Dictionary<string, PlatformRelationship>();
+                        _relationships = new Dictionary<string, PlatformRelationship[]>();
                     else
                     {
                         var jsonStr = Encoding.UTF8.GetString(Convert.FromBase64String(relationshipsStr));
@@ -51,7 +51,7 @@ namespace AspNetCore22Test.Helpers
                         {
                             ContractResolver = new CamelCasePropertyNamesContractResolver()
                         };
-                        _relationships = JsonConvert.DeserializeObject<Dictionary<string, PlatformRelationship>>(jsonStr, settings);
+                        _relationships = JsonConvert.DeserializeObject<Dictionary<string, PlatformRelationship[]>>(jsonStr, settings);
                     }
                 }
 
@@ -69,9 +69,9 @@ namespace AspNetCore22Test.Helpers
         public static string GetMySqlConnString(string relationshipName = null)
         {
             var r = relationshipName != null
-                ? Relationships[relationshipName]
-                : Relationships.Values.Single(x => x.Rel == "mysql");
-
+                ? Relationships[relationshipName].Single()
+                : Relationships.Values.Single(x => x.Rel == "mysql").Single();
+            
             return $"server={r.Host};uid={r.Username};pwd={r.Password};database={r.Path}";
         }
 
@@ -83,8 +83,8 @@ namespace AspNetCore22Test.Helpers
         public static string GetRedisConnString(string relationshipName = null)
         {
             var r = relationshipName != null
-                ? Relationships[relationshipName]
-                : Relationships.Values.Single(x => x.Rel == "redis");
+                ? Relationships[relationshipName].Single()
+                : Relationships.Values.Single(x => x.Rel == "redis").Single();
             
             return $"{r.Host}:{r.Port}";
         }
