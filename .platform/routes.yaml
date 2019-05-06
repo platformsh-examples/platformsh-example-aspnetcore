@@ -1,3 +1,6 @@
+# https://docs.platform.sh/configuration/routes.html
+
+# This will make the site available on HTTPS and redirect HTTP visitors to HTTPS.
 https://{default}/:
   type: upstream
   upstream: app:http
