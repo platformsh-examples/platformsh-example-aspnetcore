@@ -1,0 +1,22 @@
+name: app
+
+type: dotnet:2.2-rc
+
+web:
+  locations:
+    "/":
+      allow: true
+      scripts: false
+      passthru: true
+      root: "wwwroot"
+  commands:
+    start: 'dotnet ./AspNetCore22Test.dll'
+
+hooks:
+  build: |
+    dotnet publish --runtime "$DOTNET_DEFAULT_RUNTIME" --output "$PLATFORM_OUTPUT_DIR" --self-contained
+
+disk: 512
+
+mounts:
+  "/wwwroot/etc": "shared:files/wwwroot/etc"
