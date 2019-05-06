@@ -40,7 +40,7 @@ web:
       
       rules:
         # Let's serve these common asset types with customs cache headers.
-        "\.(jpe?g|png|gif|svgz?|css|js|map|ico|bmp|eot|woff2?|otf|ttf)$":
+        \.(jpe?g|png|gif|svgz?|css|js|map|ico|bmp|eot|woff2?|otf|ttf)$:
           allow: true
           expires: 300s
 
