@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore22Test.Data;
+using AspNetCore22Test.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,6 +34,20 @@ namespace AspNetCore22Test
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            if (PlatformRelationship.Available)
+            {
+                // We're on Platform; use MySQL and Redis.
+                
+                services.AddDbContext<MyDbContext>(options => { options.UseMySql(PlatformRelationship.GetMySqlConnString()); });
+                services.AddDistributedRedisCache(options => { options.Configuration = PlatformRelationship.GetRedisConnString(); });
+            }
+            else
+            {
+                // Fall back to SQLite and in-memory cache for local testing.
+                
+                services.AddDbContext<MyDbContext>(options => { options.UseSqlite("Data Source=Database.db"); });
+                services.AddDistributedMemoryCache();
+            }
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -45,6 +62,7 @@ namespace AspNetCore22Test
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

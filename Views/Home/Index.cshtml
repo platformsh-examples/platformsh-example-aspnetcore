@@ -2,7 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div>
     <h1 class="display-4">Welcome</h1>
+    
+    <p>The following configuration is being used:</p>
+    
+    <ul>
+        <li>DbBackend: @ViewData["DbBackend"]</li>
+        <li>CacheBackend: @ViewData["CacheBackend"]</li>
+    </ul>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

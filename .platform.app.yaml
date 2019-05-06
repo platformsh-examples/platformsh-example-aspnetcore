@@ -2,6 +2,10 @@ name: app
 
 type: dotnet:2.2-rc
 
+relationships:
+  mysqldb: "mysqldb:mysql"
+  rediscache: "rediscache:redis"
+
 web:
   locations:
     "/":
