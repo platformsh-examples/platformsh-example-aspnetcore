@@ -51,11 +51,12 @@ web:
 
 
 # The process definition for creating the read-only application image.
-# This will work as is, most of the time.
+# This will work as is, most of the time. When using a custom build hook, 
+# make sure to copy the -p toggles over, or builds will take much longer.
 hooks:
   build: |
     set -xe
-    dotnet publish --self-contained --runtime "$DOTNET_DEFAULT_RUNTIME" --output "$PLATFORM_OUTPUT_DIR"
+    dotnet publish --self-contained --runtime "$DOTNET_DEFAULT_RUNTIME" --output "$PLATFORM_OUTPUT_DIR" -p:UseRazorBuildServer=false -p:UseSharedCompilation=false
 
 
 # These are writable folders mounted over the read-only image of the built application. 
